@@ -3,14 +3,21 @@ import ExpenseItem from "./ExpenseItem";
 import Card from "../UI/Card";
 import ExpensesFilter from "./ExpensesFilter";
 import "./Expenses.css";
+import ExpensesMonthFilter from "./ExpensesMonthFilter";
 
 const Expenses = (props) => {
   const [filteredYear, setFilteredYear] = useState("2020");
+  const [filteredMonth, setFilteredMonth] = useState("Január");
 
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
   };
   console.log(filteredYear);
+
+  const filterChangeMonthHandler = (selectedMonth) => {
+    setFilteredMonth(selectedMonth);
+  };
+  console.log(filteredMonth);
 
   return (
     <div>
@@ -18,6 +25,10 @@ const Expenses = (props) => {
         <ExpensesFilter
           selected={filteredYear}
           onChangeFilter={filterChangeHandler}
+        />
+        <ExpensesMonthFilter
+          selected={filteredMonth}
+          onChangeMonth={filterChangeMonthHandler}
         />
 
         {props.items.map((item) => (
