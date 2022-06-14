@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import ExpenseItem from "./ExpenseItem";
 import Card from "../UI/Card";
 import ExpensesFilter from "./ExpensesFilter";
-import "./Expenses.css";
+import ExpensesList from "./ExpensesList";
+import ExpensesChart from "./ExpensesChart";
 import ExpensesMonthFilter from "./ExpensesMonthFilter";
+
+import "./Expenses.css";
+
 
 const Expenses = (props) => {
   const [filteredYear, setFilteredYear] = useState("2020");
@@ -19,28 +22,37 @@ const Expenses = (props) => {
   };
   console.log(filteredMonth);
 
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
   return (
     <div>
-      <Card className="expenses">
-        <ExpensesFilter
-          selected={filteredYear}
-          onChangeFilter={filterChangeHandler}
-        />
-        <ExpensesMonthFilter
-          selected={filteredMonth}
-          onChangeMonth={filterChangeMonthHandler}
-        />
-
-        {props.items.map((item) => (
-          <ExpenseItem
-            key={item.id}
-            title={item.title}
-            amount={item.amount}
-            date={item.date}
+      <li>
+        <Card className="expenses">
+          <ExpensesFilter
+            selected={filteredYear}
+            onChangeFilter={filterChangeHandler}
           />
-        ))}
+          <ExpensesMonthFilter
+            selected={filteredMonth}
+            onChangeMonth={filterChangeMonthHandler}
+          />
+          <ExpensesChart expenses={filteredExpenses} />
+          <ExpensesList items={filteredExpenses} />
 
-        {/* <ExpenseItem
+          {/* {filteredExpenses.length === 0 && <p>No expenses found</p>}
+        {filteredExpenses.length > 0 &&
+          filteredExpenses.map((expense) => (
+            <ExpenseItem
+              key={expense.id}
+              title={expense.title}
+              amount={expense.amount}
+              date={expense.date}
+            />
+          ))} */}
+
+          {/* <ExpenseItem
         title={props.items[0].title}
         amount={props.items[0].amount}
         date={props.items[0].date}
@@ -60,7 +72,8 @@ const Expenses = (props) => {
         amount={props.items[3].amount}
         date={props.items[3].date}
       /> */}
-      </Card>
+        </Card>
+      </li>
     </div>
   );
 };
